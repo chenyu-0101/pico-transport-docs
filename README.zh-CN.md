@@ -24,7 +24,7 @@ PICO transport实现Netcode的INetworkTransport接口，完成Netcode和PICO房�
 ![pxr-sdk-setting](images/pxr-sdk-setting.png)  
 - 在平台sdk设置('PXR_SDK' > 'Platform Settings')中取消选项'UserEntitlementCheck':  
 ![uncheck-entitlement-check](images/uncheck-entitlement-check.png)  
-- PD Debug设置Access Token('PXR_SDK'>'PC Debug Settings'):  
+- PC Debug设置Access Token('PXR_SDK'>'PC Debug Settings'):  
 ![pc-debug-setting](images/pc-debug-setting.png)   
 Access Token请从[PICO开发者平台](https://developer-cn.pico-interactive.com/)查询获取:
 ![app-accesstoken](images/app-accesstoken.png)  
