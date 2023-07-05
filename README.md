@@ -10,13 +10,15 @@ By utilizing PicoTransport, developers can leverage Netcode and PICO room servic
 ![fast-start](images/fast-start-en.PNG)  
 >PICO relies on some preview packages, such as 'XR Interaction Toolkit'. Please enable the preview package option to install these packages as shown in the following image:  
 >![preview-package](images/preview-package.PNG)  
+>To work around the bug in the PICO Unity Integration SDK v2.x.x that causes the failure to retrieve PICO user information when running in the Unity Editor, you can temporarily comment out the call to CLIB.ppf_User_GetPresenceIsJoinable in the User.cs script located in PICO.Platform/Platform/Scripts/Models at line 85. This will bypass the bug and allow you to proceed with the examples.  
+![pico-error](images/pico-platform-error.png)
 
 ### 2.2. PICO Multiplayer Service Activation  
 - Apply for a developer account on the [PICO platform](https://developer-global.pico-interactive.com/) and create an app. 
 - After creating the app, activate the PICO matchmaking(room) services for this app:  
 ![open-matchmaking-service](images/open-matchmaking-service-en.png)  
 - Create a PICO matchmaking pool as needed in the 'Matchmaking Service' section.  
->To run the included examples, it is essential to create a matchmaking pool named 'test_pool_basic_2' and set the options 'Managed Rooms' and 'Allow Matching Into the Same Room' as shown in the image below:    
+>To run the included examples, <font color=red>**it is essential to create a matchmaking pool named 'test_pool_basic_2' and set the options 'Managed Rooms' and 'Allow Matching Into the Same Room' as shown in the image below**</font>:    
 >![set-matchmaking-pool](images/set-matchmaking-pool-en.png)  
 
 ### 2.3. Unity Project Configuration  
@@ -91,7 +93,7 @@ On the other hand, in the 'MatchmakingRoom' scene, developers explicitly call PI
 #### 3.4.2 Multiplayer  
 The 'Multiplayer' example is similar to the 'MatchmakingRoom' example. In the 'Multiplayer' scene, PicoTransport also works in "External Room" mode and uses PICO's matchmaking service to gather together. Compared to 'MatchmakingRoom', 'Multiplayer' synchronizes more information, such as player actions, making it a more realistic example.  
 ##### Running the Multiplayer Example  
-- Build this scene to your PICO device and run it, making sure to add the 'Init', 'Start', and 'Fight' scenes in order (indices 0/1/2):  
+- Build this scene to your PICO device and run it, <font color=red>**making sure to add the 'Init', 'Start', and 'Fight' scenes in order (indices 0/1/2)**</font>:  
 ![multiplayer-buildrun](images/multiplayer-buildrun.png)  
 - Run it in the Unity Editor and click the 'Start' button to start the matchmaking process:  
 ![multiplayer-start](images/multiplayer-start.png)  
@@ -195,4 +197,6 @@ To accomplish these two tasks, PicoTransport provides an adapter class called Ex
 - If the host leaves the PICO room, the current Netcode session of all clients should end. However, in PICO, clients other than the original host remain in the PICO room without exiting. At this point, developers have two options:
   - Make these clients also exit the PICO room, ending the entire game. 
   - Let the new PICO room owner start StartHost, and other members in the room restart StartClient. This way, Netcode can be started again and the original game can continue. To do this, developers need to handle the host leaving event appropriately and save and restore the game state. PicoTransport provides some support for this by calling StartHost/StartClient again depending on whether it is the new PICO room owner or not. Please refer to the 'Multiplayer' code for more details. 
-- PicoTransport internally handles the sending and receiving of messages within the PICO room. The business logic should not use the message sending and receiving functions of the PICO SDK's NetworkService.  
+- PicoTransport internally handles the sending and receiving of messages within the PICO room. The business logic should not use the message sending and receiving functions of the PICO SDK's NetworkService. 
+- To work around the bug in the PICO Unity Integration SDK v2.x.x that causes the failure to retrieve PICO user information when running in the Unity Editor, you can temporarily comment out the call to CLIB.ppf_User_GetPresenceIsJoinable in the User.cs script located in PICO.Platform/Platform/Scripts/Models at line 85. This will bypass the bug and allow you to proceed with the examples.  
+![pico-error](images/pico-platform-error.png) 

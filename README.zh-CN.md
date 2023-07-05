@@ -9,14 +9,16 @@ PICO transport实现Netcode的INetworkTransport接口，完成Netcode和PICO房�
 - 跟随PICO官方文档中的["快速开始"](https://developer-cn.pico-interactive.com/document/unity)一节, 完成基本的PICO VR环境设置，并新建一个VR项目  
 ![fast-start](images/fast-start.PNG)  
 >PICO依赖一些preview的package, 比如‘XR Interaction Toolkit’:，请打开preview package开关以安装这些package，如下图所示:  
->![preview-package](images/preview-package.PNG)  
+>![preview-package](images/preview-package.PNG) 
+>在PICO Unity Integration SDK v2.x.x中有一个bug，该bug会导致在Unity Editor中运行时取PICO user信息失败。为了运行后续的例子，请临时注释掉对CLIB.ppf_User_GetPresenceIsJoinable的调用(PICO.Platform/Platform/Scripts/Models/User.cs:85)，以绕过此bug:  
+![pico-error](images/pico-platform-error.png) 
 
 ### 2.2. PICO多人联网服务开通    
 - 在[PICO平台](https://developer-cn.pico-interactive.com/)上申请开发者帐号，创建app
 - 创建app后，开通此app的PICO匹配和房间服务:  
 ![open-matchmaking-service](images/open-matchmaking-service.png)  
 - 在'匹配服务'中按需新建PICO匹配池  
->为了运行附带的例子，请务必创建一个名字为test_pool_basic_2的匹配池, 并设置‘管理房间'以及'允许多次匹配到此房间'选项，如下图所示:    
+>为了运行附带的例子，<font color=red>**请务必创建一个名字为test_pool_basic_2的匹配池, 并设置‘管理房间'以及'允许多次匹配到此房间'选项**</font>，如下图所示:    
 >![set-matchmaking-pool](images/set-matchmaking-pool.png)  
 
 ### 2.3. Unity工程中的配置  
@@ -93,7 +95,7 @@ MatchmakingRoom例子与SimpleMode例子的区别在于:
 #### 3.4.2 Multiplayer  
 multiplayer例子与MatchmakingRoom类似，场景中PicoTransport也工作于'ExternalRoom'模式，并使用PICO的匹配服务聚集到一起。相比MatchmakingRoom，Multiplayer同步了更多的信息，比如玩家的动作，所以是一个更为实际些的例子。  
 ##### 运行Multiplayer例子  
-- 编译该场景至PICO设备上并运行，注意依次添加‘Init', 'Start'和'Fight'场景(序号0/1/2):  
+- 编译该场景至PICO设备上并运行，<font color=red>**注意依次添加‘Init', 'Start'和'Fight'场景(序号0/1/2)**</font>:  
 ![multiplayer-buildrun](images/multiplayer-buildrun.png)  
 - Editor中运行，点击'Start'按钮，开始加入匹配:  
 ![multiplayer-start](images/multiplayer-start.png)  
@@ -199,4 +201,6 @@ multiplayer例子与MatchmakingRoom类似，场景中PicoTransport也工作于'E
 - 如果host离开了PICO房间，则所有client的当前Netcode session都应结束。不过，在PICO中，原host之外的clients仍然在PICO房间内而没有退出。此时，开发者有两个选择: 
   - 让这些clients也退出PICO房间，结束整个游戏; 
   - 由新的PICO房间房主重新StartHost，其它在房间中的普通成员则重新StartClient，通过这种方式再次开始Netcode，并继续原来的游戏。为此，开发者需要适当处理host离开事件，并保存和恢复游戏状态。PicoTransport对此作了一定支持，即在原host离开时，根据自身是否为新的PICO房主，分别重新调用StartHost/StartClient。具体请参考Multiplayer代码。 
-- PicoTransport内部接管了PICO房间内的消息收发，业务不要再使用PICO SDK NetworkService中的收发消息函数。  
+- PicoTransport内部接管了PICO房间内的消息收发，业务不要再使用PICO SDK NetworkService中的收发消息函数。
+- 在PICO Unity Integration SDK v2.x.x中有一个bug，该bug会导致在Unity Editor中运行时取PICO user信息失败。为了运行后续的例子，请临时注释掉对CLIB.ppf_User_GetPresenceIsJoinable的调用(PICO.Platform/Platform/Scripts/Models/User.cs:85)，以绕过此bug:  
+![pico-error](images/pico-platform-error.png)   
